@@ -17,8 +17,8 @@ public:
     void free();
     int getStreamIdx() const noexcept { return packet.stream_index; }
     
-    size_t getPacketSize() const { return packet.size; }
-    uint8_t* getPacketData() const { return packet.data; }
+    size_t getSize() const { return packet.size; }
+    uint8_t* getData() const { return packet.data; }
     
 private:
     AVPacket            packet;

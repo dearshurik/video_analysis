@@ -1,6 +1,8 @@
 #include "Packet.h"
 
 Packet::Packet() {
+    packet.data = NULL;
+    packet.size = 0;
     av_init_packet(&packet);    
 }
 

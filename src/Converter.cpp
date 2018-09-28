@@ -14,7 +14,7 @@ Converter::Converter(AVCodecContext* ctx, int w, int h, AVPixelFormat fmt)
 Converter::~Converter() {
 }
 
-bool Converter::operator()(Frame& frame, Frame& frame_out) {
+bool Converter::convert(Frame& frame, Frame& frame_out) {
     sws_scale(imgConvertCtx, (const uint8_t* const*)frame->data, frame->linesize, 
             0, frame->height, frame_out->data, frame_out->linesize);
     

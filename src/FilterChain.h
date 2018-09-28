@@ -29,8 +29,8 @@ public:
    
     virtual ~FilterChain();
     
-    bool addFilter(const char* name, const char* args, void* params = nullptr);
-    bool finishChain();
+    bool add(const char* name, const char* args, void* params = nullptr);
+    bool finish();
     
     bool pushFrame(Frame& frame);
     FiltRes popFrame(Frame& frame);

@@ -45,7 +45,7 @@ bool FilterChain::createSinkFilter(Decoder& dec) {
     return (ret >= 0);
 }
 
-bool FilterChain::addFilter(const char* name, const char* args, void* params) {
+bool FilterChain::add(const char* name, const char* args, void* params) {
     AVFilterContext* flt;
     int ret = avfilter_graph_create_filter(&flt, avfilter_get_by_name(name), NULL,
                                            args, params, filterGraph.get());
@@ -57,7 +57,7 @@ bool FilterChain::addFilter(const char* name, const char* args, void* params) {
     return true;
 }
 
-bool FilterChain::finishChain() {
+bool FilterChain::finish() {
     int ret;
     
     if ((ret = avfilter_link(lastFilter, 0, filterSink, 0)) < 0)

@@ -20,7 +20,7 @@ public:
     virtual ~Converter();
     
     size_t getFrameSize() const noexcept { return numBytes; }
-    bool operator()(Frame& frame, Frame& frame_out);
+    bool convert(Frame& frame, Frame& frame_out);
 private:
     SwsContext* imgConvertCtx;
     ulong       numBytes;
