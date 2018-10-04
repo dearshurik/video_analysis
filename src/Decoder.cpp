@@ -1,7 +1,7 @@
 #include "Decoder.h"
 #include "Except.h"
 
-Decoder::Decoder(char* filename, AVMediaType type) 
+Decoder::Decoder(const char* filename, AVMediaType type) 
     : formatContext(nullptr)
     , codecContext(nullptr)
     , streamIdx(-1)
@@ -28,7 +28,7 @@ Decoder::Decoder(char* filename, AVMediaType type)
         AVCodec* codec = avcodec_find_decoder(codecContext->codec_id);
         if (avcodec_open2(codecContext, codec, NULL) < 0)
             throw Except("Unable to open codec");
-    }    
+    }
 }
 
 Decoder::~Decoder() {
@@ -40,3 +40,6 @@ bool Decoder::readPacket(Packet& packet) {
     return (av_read_frame(formatContext, packet) >= 0);
 }
 
+bool Decoder::seek(double timestamp) {
+    return (av_seek_frame(formatContext, -1, timestamp/getCodecTimeBase()/getStreamTimeBase(), AVSEEK_FLAG_ANY) >=0);
+}

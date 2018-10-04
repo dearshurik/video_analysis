@@ -17,8 +17,10 @@ public:
 
     operator AVFrame*() const { return frame.get(); }
     AVFrame* operator ->() { return frame.get(); } 
-    int64_t getTimestamp() const { return av_frame_get_best_effort_timestamp(frame.get()); }
-
+    int64_t timestamp() const { return av_frame_get_best_effort_timestamp(frame.get()); }
+	uint8_t* data() const { return frame.get()->data[0]; }
+	uint32_t size() const { return frame.get()->nb_samples; }
+			
 private:
     std::shared_ptr<AVFrame> frame;
 

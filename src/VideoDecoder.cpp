@@ -1,6 +1,6 @@
 #include "VideoDecoder.h"
 
-VideoDecoder::VideoDecoder(char * filename) 
+VideoDecoder::VideoDecoder(const char * filename) 
     : Decoder(filename, AVMEDIA_TYPE_VIDEO)
 {
 }

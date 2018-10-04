@@ -4,7 +4,7 @@
 #include "FilterChain.h"
 #include "Converter.h"
 
-SceneIndexImpl::SceneIndexImpl(char* filename, int W, int H, SceneIdx& sc)
+SceneIndexImpl::SceneIndexImpl(const char* filename, int W, int H, ImageCallback& sc)
     : videoDec(std::make_shared<VideoDecoder>(filename))
     , filterChain(nullptr)
     , converter(nullptr)
@@ -13,7 +13,7 @@ SceneIndexImpl::SceneIndexImpl(char* filename, int W, int H, SceneIdx& sc)
     , picH(H)
 {
     filterChain = std::make_unique<FilterChain>(*videoDec);
-    filterChain->add("select", "gt(scene,0.1)");
+    filterChain->add("select", "gt(scene,0.4)");
     filterChain->finish();
     
     converter = std::make_unique<Converter>(*videoDec, picW, picH, AV_PIX_FMT_BGR24);
@@ -22,7 +22,7 @@ SceneIndexImpl::SceneIndexImpl(char* filename, int W, int H, SceneIdx& sc)
 SceneIndexImpl::~SceneIndexImpl() {
 }
 
-bool SceneIndexImpl::makeSceneIdx() {
+bool SceneIndexImpl::run() {
     Packet pkt;
     VideoEncoder enc(AV_CODEC_ID_BMP, AV_PIX_FMT_BGR24, picW, picH);
     while(videoDec->readPacket(pkt)) {
@@ -39,9 +39,12 @@ bool SceneIndexImpl::makeSceneIdx() {
                 
                 Packet outPacket;
                 enc.encode(outFrame, outPacket);
-                scene.sceneIdx(outPacket.getData(), outPacket.getSize(), decodedFrm.getTimestamp());
+                scene.putImage(outPacket.getData(), outPacket.getSize(), 
+                        decodedFrm.timestamp()*videoDec->getStreamTimeBase());
             }
         }
     }
+    scene.finishMsg();
+    return true;
 }
 

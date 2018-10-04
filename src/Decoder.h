@@ -12,7 +12,7 @@ extern "C"{
 
 class Decoder {
 public:
-    Decoder(char* filename, AVMediaType type);
+    Decoder(const char* filename, AVMediaType type);
     Decoder(const Decoder& orig) = delete;
     virtual ~Decoder();
     
@@ -21,10 +21,14 @@ public:
     operator AVCodecContext*() { return codecContext; }
     AVCodecContext* operator ->() { return codecContext; } 
     bool readPacket(Packet& packet);
+    bool seek(double timestamp);
+	double getCodecTimeBase() const { return av_q2d(formatContext->streams[streamIdx]->codec->time_base); }
+	double getStreamTimeBase() const { return av_q2d(formatContext->streams[streamIdx]->time_base); }
 protected:
     AVFormatContext*    formatContext;
     AVCodecContext*     codecContext;
     int                 streamIdx;
+	int64_t				timeBase;
 };
 
 #endif /* DECODER_H */

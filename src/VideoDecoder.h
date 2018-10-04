@@ -21,7 +21,7 @@ class VideoDecoder
     : public Decoder
 {
 public:
-    VideoDecoder(char * filename);
+    VideoDecoder(const char * filename);
     VideoDecoder(const VideoDecoder& orig) = delete;
     virtual ~VideoDecoder();
 
