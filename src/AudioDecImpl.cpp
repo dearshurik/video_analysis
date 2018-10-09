@@ -28,7 +28,7 @@ bool AudioDecImpl::run() {
         if(audioDec->decode(pkt, decodedFrm)) {
             double currTs = decodedFrm.timestamp()*audioDec->getStreamTimeBase();
             for(int i = 0; i < audioDec->getAudioCh(); i++)
-                cb.putSamples(decodedFrm.audio_data(i), decodedFrm.audioSize()/sizeof(int16_t), currTs);
+                cb.putSamples(decodedFrm.audio_data(i), decodedFrm.audioSize(), currTs);
 /*
             if((endTimestamp >= 0) && (currTs >= endTimestamp))
                 break;*/

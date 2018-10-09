@@ -43,7 +43,8 @@ public:
     virtual ~AudioCb() {}
     virtual void putSamples(int16_t* samples, size_t size, double timestamp)
     {
-        fwrite(samples, size, sizeof(uint8_t), f);
+        if(samples)
+            fwrite(samples, size, sizeof(uint8_t), f);
     }
     
     virtual void finishMsg()
@@ -73,7 +74,7 @@ void runVideo(CustonSceneIdx& sc) {
 }
 
 void runAudio(AudioCb& sc) {
-    AudioDec dec("/home/kuznetsov/video/test.wav", sc);
+    AudioDec dec("/home/kuznetsov/video/5926011.mp4", sc);
     dec.setInterval(0, 800);
     dec.run();
 }
