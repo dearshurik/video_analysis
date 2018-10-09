@@ -4,6 +4,7 @@
 #include <Callback.h>
 #include <SceneIndex.h>
 #include <VideoDec.h>
+#include <AudioDec.h>
 
 class CustonSceneIdx : public ImageCallback 
 {
@@ -31,6 +32,34 @@ private:
     int num;
 };
 
+class AudioCb : public AudioCallback
+{
+public:
+    AudioCb() : f(NULL), isFinish(false) 
+    {
+        f = fopen("out.pcm", "wb");
+    }
+    
+    virtual ~AudioCb() {}
+    virtual void putSamples(int16_t* samples, size_t size, double timestamp)
+    {
+        fwrite(samples, size, sizeof(uint8_t), f);
+    }
+    
+    virtual void finishMsg()
+    {
+        fclose(f);
+        isFinish = true;
+    }
+    
+    bool finishGet() { return isFinish; }
+    void finishClear() { isFinish = false; }
+    
+private:
+    bool isFinish;
+    FILE *f;
+};
+
 void runScene(CustonSceneIdx& sc) {
     SceneIndex scImpl("/home/kuznetsov/video/5926011.mp4", 320, 240, sc);
 
@@ -43,14 +72,23 @@ void runVideo(CustonSceneIdx& sc) {
     dec.run();
 }
 
+void runAudio(AudioCb& sc) {
+    AudioDec dec("/home/kuznetsov/video/test.wav", sc);
+    dec.setInterval(0, 800);
+    dec.run();
+}
+
 int main(int argc, char** argv) {
     CustonSceneIdx scIdx;
+    AudioCb cb;
     /*runScene(scIdx);
     while(!scIdx.finishGet());*/
     
-    scIdx.finishClear();
+    /*scIdx.finishClear();
     runVideo(scIdx);
-    while(!scIdx.finishGet());
+    while(!scIdx.finishGet());*/
+    runAudio(cb);
+    while(!cb.finishGet());
     return 0;
 }
         

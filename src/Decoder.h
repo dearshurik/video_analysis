@@ -24,6 +24,7 @@ public:
     bool seek(double timestamp);
 	double getCodecTimeBase() const { return av_q2d(formatContext->streams[streamIdx]->codec->time_base); }
 	double getStreamTimeBase() const { return av_q2d(formatContext->streams[streamIdx]->time_base); }
+
 protected:
     AVFormatContext*    formatContext;
     AVCodecContext*     codecContext;

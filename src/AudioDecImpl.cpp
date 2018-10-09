@@ -22,14 +22,16 @@ bool AudioDecImpl::setInterval(double tsStart, double tsEnd) {
 bool AudioDecImpl::run() {
     Packet pkt;
     while(audioDec->readPacket(pkt)) {
-        Frame decodedFrm;
+        Frame decodedFrm(AV_SAMPLE_FMT_S16, audioDec->channelLayout(), 
+                audioDec->sampleRate(), audioDec->getAudioCh());
         
         if(audioDec->decode(pkt, decodedFrm)) {
             double currTs = decodedFrm.timestamp()*audioDec->getStreamTimeBase();
-            cb.putSamples(decodedFrm.data(), decodedFrm.size(), currTs);
-
+            for(int i = 0; i < audioDec->getAudioCh(); i++)
+                cb.putSamples(decodedFrm.audio_data(i), decodedFrm.audioSize()/sizeof(int16_t), currTs);
+/*
             if((endTimestamp >= 0) && (currTs >= endTimestamp))
-                break;
+                break;*/
         }
     }
     cb.finishMsg();

@@ -20,6 +20,15 @@ Frame::Frame(size_t size, AVPixelFormat fmt, int w, int h)
    
 }
 
+Frame::Frame(int format, uint64_t channel_layout, int sample_rate, int channels)
+    : frame(av_frame_alloc(), av_free)
+{
+    frame->format = format;
+    frame->channel_layout = channel_layout;
+    frame->sample_rate = sample_rate;
+    frame->channels = channels;
+}
+
 Frame::Frame(const Frame& orig) {
     frame = orig.frame;
 }
