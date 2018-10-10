@@ -5,7 +5,7 @@ extern "C"{
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/opt.h>
-#include <libavresample/avresample.h>
+#include <libswresample/swresample.h>
 }
 
 #include <memory>
@@ -24,12 +24,9 @@ public:
 	
     virtual bool decode(Packet& packet, Frame& frame) override;
 	
-	uint64_t channelLayout() const { return codecContext->channel_layout; }
-	uint64_t sampleRate() const { return codecContext->sample_rate; }	
-	uint8_t  getAudioCh() const { return codecContext->channels; }	
 private:
-	static void resamplerFree(AVAudioResampleContext* ptr);
-	std::shared_ptr<AVAudioResampleContext> conv;
+	static void resamplerFree(SwrContext* ptr);
+	std::shared_ptr<SwrContext> conv;
 	bool isConfig;
 };
 

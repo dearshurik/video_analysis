@@ -16,14 +16,14 @@
 
 AudioDecoder::AudioDecoder(const char * filename)
     : Decoder(filename, AVMEDIA_TYPE_AUDIO)
-    , conv(avresample_alloc_context(), resamplerFree)
+    , conv(swr_alloc(), resamplerFree)
     , isConfig(false)
 {
-    avresample_open(conv.get());
+    swr_init(conv.get());
 }
 
 AudioDecoder::~AudioDecoder() {
-    avresample_close(conv.get());
+    swr_close(conv.get());
 }
 
 bool AudioDecoder::decode(Packet& packet, Frame& frame) {
@@ -32,11 +32,13 @@ bool AudioDecoder::decode(Packet& packet, Frame& frame) {
         Frame decodedFrame;
         avcodec_decode_audio4(codecContext, decodedFrame, &frame_finished, packet);
         if(frame_finished) {
+            frame = decodedFrame;
+            frame.setFormat(AV_SAMPLE_FMT_S16P);
             if(!isConfig) {
-                avresample_config(conv.get(), frame, decodedFrame);
+                swr_config_frame(conv.get(), frame, decodedFrame);
                 isConfig = true;
             }
-            int ret = avresample_convert_frame(conv.get(), frame, decodedFrame);
+            int ret = swr_convert_frame(conv.get(), frame, decodedFrame);
             std::cout << std::to_string(ret) << std::endl;
         }
         
@@ -46,6 +48,6 @@ bool AudioDecoder::decode(Packet& packet, Frame& frame) {
     return false;
 }
 
-void AudioDecoder::resamplerFree(AVAudioResampleContext* ptr) {
-    avresample_free(&ptr);
+void AudioDecoder::resamplerFree(SwrContext* ptr) {
+    swr_free (&ptr);
 }

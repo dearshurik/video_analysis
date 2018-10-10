@@ -29,12 +29,20 @@ Frame::Frame(int format, uint64_t channel_layout, int sample_rate, int channels)
     frame->channels = channels;
 }
 
-Frame::Frame(const Frame& orig) {
-    frame = orig.frame;
+Frame::Frame(const Frame& orig)
+    : frame(av_frame_alloc(), av_free)
+{
+    av_frame_copy_props(frame.get(), orig.frame.get());
 }
 
 Frame::~Frame() {
 }
 
-
-
+size_t Frame::audioSize() const
+{
+    int plane_size;
+    int data_size = av_samples_get_buffer_size( &plane_size, frame->channels,
+                                                frame->nb_samples,
+                                                (AVSampleFormat)frame->format, 1);
+    return plane_size;
+}

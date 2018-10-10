@@ -17,8 +17,16 @@ public:
     virtual ~Frame();
 
     operator AVFrame*() const { return frame.get(); }
-	Frame& operator=(Frame& other) = delete;
-    Frame& operator=(Frame&& other) = delete;
+	Frame& operator=(Frame& other) {
+		av_frame_copy_props(frame.get(), other.frame.get());
+		frame->channel_layout = other.frame->channel_layout;
+		frame->sample_rate = other.frame->sample_rate;
+		frame->format =  other.frame->format;
+	}
+	
+    Frame& operator=(Frame&& other) {
+		frame = std::move(other.frame);
+	}
 	
     AVFrame* operator ->() { return frame.get(); } 
     int64_t timestamp() const { return av_frame_get_best_effort_timestamp(frame.get()); }
@@ -26,12 +34,12 @@ public:
 	int16_t* audio_data(uint8_t ch) const { return (int16_t*)frame.get()->extended_data[ch]; }
 	
 	size_t size() const { return frame.get()->nb_samples; }
-	size_t audioSize() const {
-		int plane_size;
-		int data_size = av_samples_get_buffer_size(&plane_size, frame->channels,
-											   frame->nb_samples,
-											   (AVSampleFormat)frame->format, 1);
-		return plane_size;
+	size_t audioSize() const;
+	
+	uint8_t channels() const { return frame->channels; }
+	
+	void setFormat(enum AVSampleFormat fmt) {
+		frame->format = fmt; 
 	}
 			
 private:

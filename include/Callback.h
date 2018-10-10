@@ -9,7 +9,7 @@ public:
 
 class AudioCallback {
 public:
-    virtual void putSamples(int16_t* samples, size_t size, double timestamp) = 0;
+    virtual void putSamples(uint8_t ch, int16_t* samples, size_t size, double timestamp) = 0;
 	virtual void finishMsg() = 0;	
 };
 
