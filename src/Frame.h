@@ -12,7 +12,7 @@ class Frame {
 public:
     Frame();
     Frame(size_t size, AVPixelFormat fmt, int w, int h);
-	Frame(int format, uint64_t channel_layout, int sample_rate, int channels);
+    Frame(int format, uint64_t channel_layout, int sample_rate, int channels);
     Frame(const Frame& orig);
     virtual ~Frame();
 
@@ -30,17 +30,16 @@ public:
 	
     AVFrame* operator ->() { return frame.get(); } 
     int64_t timestamp() const { return av_frame_get_best_effort_timestamp(frame.get()); }
-	uint8_t* video_data() const { return frame.get()->data[0]; }
-	int16_t* audio_data(uint8_t ch) const { return (int16_t*)frame.get()->extended_data[ch]; }
-	
-	size_t size() const { return frame.get()->nb_samples; }
-	size_t audioSize() const;
-	
-	uint8_t channels() const { return frame->channels; }
-	
-	void setFormat(enum AVSampleFormat fmt) {
-		frame->format = fmt; 
-	}
+    uint8_t* video_data() const { return frame.get()->data[0]; }
+    float* audio_data(uint8_t ch) const { return (float*)frame.get()->data[ch]; }
+
+    size_t size() const { return frame.get()->nb_samples; }
+
+    uint8_t channels() const { return frame->channels; }
+
+    void setFormat(enum AVSampleFormat fmt) {
+            frame->format = fmt; 
+    }
 			
 private:
     std::shared_ptr<AVFrame> frame;

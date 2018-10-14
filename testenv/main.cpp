@@ -41,10 +41,10 @@ public:
     }
     
     virtual ~AudioCb() {}
-    virtual void putSamples(uint8_t ch, int16_t* samples, size_t size, double timestamp)
+    virtual void putSamples(uint8_t ch, float* samples, size_t size, double timestamp)
     {
-        if(ch == 0)
-            fwrite(samples, size, sizeof(int16_t), f);
+        if(ch == 1)
+            fwrite(samples, size, sizeof(float), f);
     }
     
     virtual void finishMsg()
@@ -62,7 +62,7 @@ private:
 };
 
 void runScene(CustonSceneIdx& sc) {
-    SceneIndex scImpl("/home/kuznetsov/video/5926011.mp4", 320, 240, sc);
+    SceneIndex scImpl("/home/dearshurik/Downloads/toystory.mp4", 320, 240, sc);
 
     scImpl.run();
 }
@@ -74,7 +74,7 @@ void runVideo(CustonSceneIdx& sc) {
 }
 
 void runAudio(AudioCb& sc) {
-    AudioDec dec("/home/kuznetsov/video/test.mp3", sc);
+    AudioDec dec("/home/dearshurik/Downloads/toystory.mp4", sc);
     dec.setInterval(0, 300);
     dec.run();
 }

@@ -37,12 +37,3 @@ Frame::Frame(const Frame& orig)
 
 Frame::~Frame() {
 }
-
-size_t Frame::audioSize() const
-{
-    int plane_size;
-    int data_size = av_samples_get_buffer_size( &plane_size, frame->channels,
-                                                frame->nb_samples,
-                                                (AVSampleFormat)frame->format, 1);
-    return plane_size;
-}

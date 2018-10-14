@@ -23,7 +23,7 @@ AudioDecoder::AudioDecoder(const char * filename)
 }
 
 AudioDecoder::~AudioDecoder() {
-    swr_close(conv.get());
+    //swr_close(conv.get());
 }
 
 bool AudioDecoder::decode(Packet& packet, Frame& frame) {
@@ -33,16 +33,17 @@ bool AudioDecoder::decode(Packet& packet, Frame& frame) {
         avcodec_decode_audio4(codecContext, decodedFrame, &frame_finished, packet);
         if(frame_finished) {
             frame = decodedFrame;
-            frame.setFormat(AV_SAMPLE_FMT_S16P);
+            frame.setFormat(AV_SAMPLE_FMT_FLTP);
             if(!isConfig) {
                 swr_config_frame(conv.get(), frame, decodedFrame);
                 isConfig = true;
             }
             int ret = swr_convert_frame(conv.get(), frame, decodedFrame);
-            std::cout << std::to_string(ret) << std::endl;
+            //std::cout << std::to_string(ret) << std::endl;
         }
         
         packet.free();
+        //std::cout << std::to_string(frame_finished) << std::endl;
         return (frame_finished > 0);  
     }
     return false;
