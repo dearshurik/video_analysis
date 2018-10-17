@@ -3,6 +3,8 @@
 *.so
 *.dll
 *.cxx
+*.exe
+swig/*h
 nbproject
 swig/src_swig
 testenv/main

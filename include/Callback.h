@@ -7,12 +7,14 @@ namespace VideoAnalysis {
 
 class CPP_API ImageCallback {
 public:
+	virtual ~ImageCallback() {}
     virtual void putImage(uint8_t* picData, size_t picSize, double timestamp) = 0;
     virtual void finishMsg() = 0;
 };
 
 class CPP_API AudioCallback {
 public:
+	virtual ~AudioCallback() {}
     virtual void putSamples(uint8_t ch, short* samples, size_t size, double timestamp) = 0;
     virtual void finishMsg() = 0;	
 };
