@@ -2,17 +2,20 @@
 #define VIDEODEC_H
 
 #include <memory>
+#include "Config.h"
 #include "Callback.h"
 
 class VideoDecImpl;
 
-class VideoDec {
+namespace VideoAnalysis {
+
+class CPP_API VideoDec {
 public:
 	// Create video decoder detect object 
 	// filename - media file name
 	// picW, picH - output picture whidth and height
 	// sc - callback object	
-    VideoDec(const char* filename, int picW, int picH, ImageCallback& sc);
+    VideoDec(const char* filename, int picW, int picH, VideoAnalysis::ImageCallback& sc);
     VideoDec(const VideoDec& orig) = delete;
     virtual ~VideoDec();
     
@@ -26,6 +29,8 @@ public:
 private:
     std::unique_ptr<VideoDecImpl> implPtr;
 };
+
+}
 
 #endif /* VIDEODEC_H */
 

@@ -6,7 +6,7 @@
 #include <VideoDec.h>
 #include <AudioDec.h>
 
-class CustonSceneIdx : public ImageCallback 
+class CustonSceneIdx : public VideoAnalysis::ImageCallback 
 {
 public:
     CustonSceneIdx() : isFinish(false), num(0) {}
@@ -32,7 +32,7 @@ private:
     int num;
 };
 
-class AudioCb : public AudioCallback
+class AudioCb : public VideoAnalysis::AudioCallback
 {
 public:
     AudioCb() : f(NULL), isFinish(false) 
@@ -62,19 +62,19 @@ private:
 };
 
 void runScene(CustonSceneIdx& sc) {
-    SceneIndex scImpl("/home/dearshurik/Downloads/toystory.mp4", 320, 240, sc);
+    VideoAnalysis::SceneIndex scImpl("/home/dearshurik/Downloads/toystory.mp4", 320, 240, sc);
 
     scImpl.run();
 }
 
 void runVideo(CustonSceneIdx& sc) {
-    VideoDec dec("/home/kuznetsov/video/5926011.mp4", 320, 240, sc);
+    VideoAnalysis::VideoDec dec("/home/kuznetsov/video/5926011.mp4", 320, 240, sc);
     dec.setInterval(60.04, 0);
     dec.run();
 }
 
 void runAudio(AudioCb& sc) {
-    AudioDec dec("/home/dearshurik/Downloads/toystory.mp4", sc);
+    VideoAnalysis::AudioDec dec("/home/kuznetsov/video/5926011.mp4", sc);
     dec.setInterval(0, 300);
     dec.run();
 }

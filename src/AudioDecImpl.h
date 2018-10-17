@@ -4,6 +4,8 @@
 #include <memory>
 #include "Callback.h"
 
+using namespace VideoAnalysis;
+
 class AudioDecoder;
 
 class AudioDecImpl {

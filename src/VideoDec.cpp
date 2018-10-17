@@ -2,6 +2,8 @@
 #include "VideoDecImpl.h"
 #include <VideoDec.h>
 
+using namespace VideoAnalysis;
+
 VideoDec::VideoDec(const char* filename, int picW, int picH, ImageCallback& sc)
     : implPtr(std::make_unique<VideoDecImpl>(filename, picW, picH, sc))
 {

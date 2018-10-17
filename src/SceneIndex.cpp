@@ -2,6 +2,8 @@
 #include "SceneIndexImpl.h"
 #include <SceneIndex.h>
 
+using namespace VideoAnalysis;
+
 SceneIndex::SceneIndex(const char* filename, int picW, int picH, ImageCallback& sc) 
     : implPtr(std::make_unique<SceneIndexImpl>(filename, picW, picH, sc))
 {

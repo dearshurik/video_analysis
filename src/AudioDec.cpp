@@ -3,6 +3,8 @@
 #include "AudioDecImpl.h"
 #include <AudioDec.h>
 
+using namespace VideoAnalysis;
+
 AudioDec::AudioDec(const char* filename, AudioCallback& sc) 
     : implPtr(std::make_unique<AudioDecImpl>(filename, sc))
 {

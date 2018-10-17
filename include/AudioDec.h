@@ -2,16 +2,20 @@
 #define AUDIODEC_H
 
 #include <memory>
+#include "Config.h"
 #include "Callback.h"
+
 
 class AudioDecImpl;
 
-class AudioDec {
+namespace VideoAnalysis {
+
+class CPP_API AudioDec {
 public:
 	// Create video decoder detect object 
 	// filename - media file name
 	// sc - callback object		
-	AudioDec(const char* filename, AudioCallback& sc);
+	AudioDec(const char* filename, VideoAnalysis::AudioCallback& sc);
 	AudioDec(const AudioDec& orig) = delete;
 	virtual ~AudioDec();
 	
@@ -25,6 +29,8 @@ public:
 private:
     std::unique_ptr<AudioDecImpl> implPtr;
 };
+
+}
 
 #endif /* AUDIODEC_H */
 
