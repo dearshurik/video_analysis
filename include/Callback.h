@@ -13,7 +13,7 @@ public:
 
 class CPP_API AudioCallback {
 public:
-    virtual void putSamples(uint8_t ch, float* samples, size_t size, double timestamp) = 0;
+    virtual void putSamples(uint8_t ch, short* samples, size_t size, double timestamp) = 0;
     virtual void finishMsg() = 0;	
 };
 

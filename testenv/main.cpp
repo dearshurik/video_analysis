@@ -41,10 +41,10 @@ public:
     }
     
     virtual ~AudioCb() {}
-    virtual void putSamples(uint8_t ch, float* samples, size_t size, double timestamp)
+    virtual void putSamples(uint8_t ch, short* samples, size_t size, double timestamp)
     {
         if(ch == 1)
-            fwrite(samples, size, sizeof(float), f);
+            fwrite(samples, size, sizeof(short), f);
     }
     
     virtual void finishMsg()
@@ -74,7 +74,7 @@ void runVideo(CustonSceneIdx& sc) {
 }
 
 void runAudio(AudioCb& sc) {
-    VideoAnalysis::AudioDec dec("/home/kuznetsov/video/5926011.mp4", sc);
+    VideoAnalysis::AudioDec dec("/home/kuznetsov/video/4308.mp4", sc);
     dec.setInterval(0, 300);
     dec.run();
 }

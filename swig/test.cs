@@ -4,7 +4,7 @@ using VideoAnalysis;
 
 public class AudioCB : AudioCallback {
 
-    public override void putSamples(byte ch, SWIGTYPE_p_float samples, uint size, double timestamp) {
+    public override void putSamples(byte ch, short samples, uint size, double timestamp) {
     }
     
     public override void finishMsg() {

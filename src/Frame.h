@@ -31,7 +31,7 @@ public:
     AVFrame* operator ->() { return frame.get(); } 
     int64_t timestamp() const { return av_frame_get_best_effort_timestamp(frame.get()); }
     uint8_t* video_data() const { return frame.get()->data[0]; }
-    float* audio_data(uint8_t ch) const { return (float*)frame.get()->data[ch]; }
+    short* audio_data(uint8_t ch) const { return (short*)frame.get()->data[ch]; }
 
     size_t size() const { return frame.get()->nb_samples; }
 
