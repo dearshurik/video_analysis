@@ -30,7 +30,7 @@ then
 	# mcs -out:mlt-sharp.dll -target:library -keyfile:mlt-sharp.snk src_swig/*.cs
 
 	# Compile the example
-	#mcs -r:av-sharp.dll test.cs
+	mcs -r:av-sharp.dll test.cs
 	
 else
 	echo Mono C# compiler not installed.

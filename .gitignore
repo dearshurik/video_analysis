@@ -1,0 +1,8 @@
+*.o
+*.pcm
+*.so
+*.dll
+*.cxx
+nbproject
+swig/src_swig
+testenv/main
