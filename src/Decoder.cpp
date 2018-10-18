@@ -1,5 +1,6 @@
 #include "Decoder.h"
 #include "Except.h"
+#include <iostream>
 
 Decoder::Decoder(const char* filename, AVMediaType type) 
     : formatContext(nullptr)
@@ -9,11 +10,15 @@ Decoder::Decoder(const char* filename, AVMediaType type)
     avcodec_register_all();
     av_register_all();
 
-    if (avformat_open_input(&formatContext, filename, NULL, NULL) < 0)
+    if (avformat_open_input(&formatContext, filename, NULL, NULL) < 0) {
+        std::cout << "Unable to open input file" << std::endl;
         throw Except("Unable to open input file");
+    }
 
-    if (avformat_find_stream_info(formatContext, NULL) < 0)
+    if (avformat_find_stream_info(formatContext, NULL) < 0) {
+        std::cout << "Unable to find stream info" << std::endl;
         throw Except("Unable to find stream info");
+    }
   
     
     for (auto i = 0; i < formatContext->nb_streams; ++i) {
@@ -26,8 +31,10 @@ Decoder::Decoder(const char* filename, AVMediaType type)
     if(streamIdx >= 0) {
         codecContext = formatContext->streams[streamIdx]->codec;
         AVCodec* codec = avcodec_find_decoder(codecContext->codec_id);
-        if (avcodec_open2(codecContext, codec, NULL) < 0)
-            throw Except("Unable to open codec");
+        if (avcodec_open2(codecContext, codec, NULL) < 0) {
+            std::cout << "Unable to open codec" << std::endl;
+            throw "Unable to open codec";
+        }
     }
 }
 

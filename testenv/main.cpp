@@ -41,10 +41,10 @@ public:
     }
     
     virtual ~AudioCb() {}
-    virtual void putSamples(uint8_t ch, short* samples, size_t size, double timestamp)
+    virtual void putSamples(VideoAnalysis::AudioFrame frame)
     {
-        if(ch == 1)
-            fwrite(samples, size, sizeof(short), f);
+        if(frame.getChannel() == 1)
+            fwrite(frame.getSamples(), frame.getSize(), sizeof(short), f);
     }
     
     virtual void finishMsg()

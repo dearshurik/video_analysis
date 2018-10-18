@@ -39,8 +39,9 @@ bool SceneIndexImpl::run() {
                 
                 Packet outPacket;
                 enc.encode(outFrame, outPacket);
-                scene.putImage(outPacket.getData(), outPacket.getSize(), 
+                ImageFrame img(outPacket.getData(), outPacket.getSize(), 
                         decodedFrm.timestamp()*videoDec->getStreamTimeBase());
+                scene.putImage(img);
             }
         }
     }

@@ -39,7 +39,8 @@ bool VideoDecImpl::run() {
             Packet outPacket;
             enc.encode(outFrame, outPacket);
             double currTs = decodedFrm.timestamp()*videoDec->getStreamTimeBase();
-            scene.putImage(outPacket.getData(), outPacket.getSize(), currTs);
+            ImageFrame img(outPacket.getData(), outPacket.getSize(), currTs);
+            scene.putImage(img);
 
             if((endTimestamp >= 0) && (currTs >= endTimestamp))
                 break;
